@@ -21,7 +21,7 @@ export default {
   data() {
     return {
       inputText: null as string | null,
-      resultado: null,
+      resultado: null as { instruccion1: string, instruccion2: string } | null,
       error: "",
     };
   },
@@ -38,8 +38,13 @@ export default {
       }
     },
     procesarEntrada() {
+      if (!this.inputText) {
+        this.error = "El texto de entrada está vacío.";
+        return;
+      }
+
       // Dividir el texto de entrada en líneas
-      const lineas = this.inputText.split("\n");
+      const lineas = (this.inputText as string).split("\n");
       if (lineas.length !== 4) {
         this.error = "La entrada debe tener exactamente cuatro líneas."
         return;
@@ -69,7 +74,7 @@ export default {
       };
       this.limpiarError();
     },
-    verificarInstruccion(instruccion, mensaje, longitudInstruccion) {
+    verificarInstruccion(instruccion: String, mensaje: String, longitudInstruccion: number) {
     // Buscar la instrucción en el mensaje permitiendo repeticiones
     let i = 0;
     for (let j = 0; j < mensaje.length; j++) {
@@ -84,20 +89,6 @@ export default {
         }
     }
     return false;
-    },
-    generarCombinaciones(mensaje) {
-    // Generar combinaciones del mensaje con repetición
-    const combinaciones = [];
-    for (let i = 0; i < mensaje.length; i++) {
-        for (let j = i + 1; j <= mensaje.length; j++) {
-            const subcadena = mensaje.slice(i, j);
-            // Verificar si la subcadena no contiene dos letras iguales seguidas
-            if (!subcadena.match(/(.)\1+/)) {
-                combinaciones.push(subcadena);
-            }
-        }
-    }
-    return combinaciones;
     },
     limpiarError() {
       this.error = ""; // Restablecer el mensaje de error a un valor vacío
