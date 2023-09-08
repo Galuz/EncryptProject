@@ -8,7 +8,7 @@
         <div>
           <input type="file" @change="cargarArchivo">
         </div>
-        <div v-if="resultado">
+        <div v-if="mostrarResultado">
             <h2>Resultado:</h2>
             <p>Primera Instrucción: {{ resultado.instruccion1 }}</p>
             <p>Segunda Instrucción: {{ resultado.instruccion2 }}</p>
@@ -23,6 +23,7 @@ export default {
       inputText: null as string | null,
       resultado: null as { instruccion1: string, instruccion2: string } | null,
       error: "",
+      mostrarResultado: false,
     };
   },
   methods: {
@@ -35,9 +36,13 @@ export default {
           this.limpiarError();
         };
         lector.readAsText(archivo);
+      } else {
+        this.inputText = "";
+        this.limpiarError();
       }
     },
     procesarEntrada() {
+      this.mostrarResultado = false;
       if (!this.inputText) {
         this.error = "El texto de entrada está vacío.";
         return;
@@ -73,6 +78,7 @@ export default {
         instruccion2: instruccion2Encontrada ? "SI" : "NO",
       };
       this.limpiarError();
+      this.mostrarResultado = true;
     },
     verificarInstruccion(instruccion: String, mensaje: String, longitudInstruccion: number) {
     // Buscar la instrucción en el mensaje permitiendo repeticiones
