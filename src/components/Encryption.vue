@@ -2,16 +2,16 @@
     <div>
         <div>
           <h1>Verificación de Instrucciones</h1>
-          <textarea v-model="inputText" placeholder="Ingrese la entrada aquí"  @input="limpiarError"></textarea>
-          <button @click="procesarEntrada">Procesar</button>
+          <textarea v-model="inputText" placeholder="Ingrese la entrada aquí"  @input="cleanError"></textarea>
+          <button @click="processInput">Procesar</button>
         </div>
         <div>
-          <input type="file" @change="cargarArchivo">
+          <input type="file" @change="loadFile">
         </div>
-        <div v-if="mostrarResultado">
+        <div v-if="showResult">
             <h2>Resultado:</h2>
-            <p>Primera Instrucción: {{ resultado.instruccion1 }}</p>
-            <p>Segunda Instrucción: {{ resultado.instruccion2 }}</p>
+            <p>Primera Instrucción: {{ result.instruction1  }}</p>
+            <p>Segunda Instrucción: {{ result.instruction2  }}</p>
         </div>
         <p class="alert" v-if="error">{{ error }}</p>
     </div>
@@ -21,42 +21,42 @@ export default {
   data() {
     return {
       inputText: null as string | null,
-      resultado: null as { instruccion1: string, instruccion2: string } | null,
+      result: null as { instruction1: string, instruction2: string } | null,
       error: "",
-      mostrarResultado: false,
+      showResult: false,
     };
   },
   methods: {
-    cargarArchivo(event: Event) {
-      const archivo = (event.target as HTMLInputElement).files?.[0];
-      if (archivo) {
-        const lector = new FileReader();
-        lector.onload = (e) => {
+    loadFile(event: Event) {
+      const file  = (event.target as HTMLInputElement).files?.[0];
+      if (file ) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
           this.inputText = e.target?.result as string;
-          this.limpiarError();
+          this.cleanError();
         };
-        lector.readAsText(archivo);
+        reader.readAsText(file);
       } else {
         this.inputText = "";
-        this.limpiarError();
+        this.cleanError();
       }
     },
-    procesarEntrada() {
-      this.mostrarResultado = false;
+    processInput() {
+      this.showResult = false;
       if (!this.inputText) {
         this.error = "El texto de entrada está vacío.";
         return;
       }
 
       // Dividir el texto de entrada en líneas
-      const lineas = (this.inputText as string).split("\n");
-      if (lineas.length !== 4) {
+      const lines = (this.inputText as string).split("\n");
+      if (lines.length !== 4) {
         this.error = "La entrada debe tener exactamente cuatro líneas."
         return;
       }
 
       // Leer los valores de M1, M2 y N desde la primera línea
-      const [M1, M2, N] = lineas[0].split(" ").map(Number);
+      const [M1, M2, N] = lines[0].split(" ").map(Number);
       // Validar que N esté dentro del rango especificado (entre 3 y 5000)
       if (N < 3 || N > 5000) {
         this.error = "El valor de N debe estar entre 3 y 5000."
@@ -64,31 +64,31 @@ export default {
       }
 
       // Leer las instrucciones y el mensaje de las siguientes líneas
-      const instruccion1 = lineas[1];
-      const instruccion2 = lineas[2];
-      const mensaje = lineas[3];
+      const instruction1 = lines[1];
+      const instruction2 = lines[2];
+      const message = lines[3];
 
       // Verificar si las instrucciones están escondidas en el mensaje
-      const instruccion1Encontrada = this.verificarInstruccion(instruccion1, mensaje, M1);
-      const instruccion2Encontrada = this.verificarInstruccion(instruccion2, mensaje, M2);
+      const instruction1Found = this.verificarInstruccion(instruction1, message, M1);
+      const instruction2Found = this.verificarInstruccion(instruction2, message, M2);
 
       // Actualizar el resultado
-      this.resultado = {
-        instruccion1: instruccion1Encontrada ? "SI" : "NO",
-        instruccion2: instruccion2Encontrada ? "SI" : "NO",
+      this.result = {
+        instruction1: instruction1Found ? "SI" : "NO",
+        instruction2: instruction2Found ? "SI" : "NO",
       };
-      this.limpiarError();
-      this.mostrarResultado = true;
+      this.cleanError();
+      this.showResult = true;
     },
-    verificarInstruccion(instruccion: String, mensaje: String, longitudInstruccion: number) {
+    verificarInstruccion(instruction: String, message: String, instructionLength: number) {
     // Buscar la instrucción en el mensaje permitiendo repeticiones
     let i = 0;
-    for (let j = 0; j < mensaje.length; j++) {
-        if (instruccion[i] === mensaje[j]) {
+    for (let j = 0; j < message.length; j++) {
+        if (instruction[i] === message[j]) {
             i++;
-            if (i === longitudInstruccion) {
+            if (i === instructionLength) {
                 // Verificar si la combinación no contiene dos letras iguales seguidas
-                if (!instruccion.match(/(.)\1+/)) {
+                if (!instruction.match(/(.)\1+/)) {
                     return true;
                 }
             }
@@ -96,7 +96,7 @@ export default {
     }
     return false;
     },
-    limpiarError() {
+    cleanError() {
       this.error = ""; // Restablecer el mensaje de error a un valor vacío
     },
   },
