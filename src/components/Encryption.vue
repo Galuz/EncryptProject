@@ -48,31 +48,31 @@ export default {
         return;
       }
 
-      // Dividir el texto de entrada en líneas
+      // Split input text into lines
       const lines = (this.inputText as string).split("\n");
       if (lines.length !== 4) {
         this.error = "La entrada debe tener exactamente cuatro líneas."
         return;
       }
 
-      // Leer los valores de M1, M2 y N desde la primera línea
+      // Read values of M1, M2, and N from the first line
       const [M1, M2, N] = lines[0].split(" ").map(Number);
-      // Validar que N esté dentro del rango especificado (entre 3 y 5000)
+      // Validate that N is within the specified range (between 3 and 5000)
       if (N < 3 || N > 5000) {
         this.error = "El valor de N debe estar entre 3 y 5000."
         return;
       }
 
-      // Leer las instrucciones y el mensaje de las siguientes líneas
+      // Read instructions and the message from the following lines
       const instruction1 = lines[1];
       const instruction2 = lines[2];
       const message = lines[3];
 
-      // Verificar si las instrucciones están escondidas en el mensaje
+      // Verify if the instructions are hidden in the message
       const instruction1Found = this.verificarInstruccion(instruction1, message, M1);
       const instruction2Found = this.verificarInstruccion(instruction2, message, M2);
 
-      // Actualizar el resultado
+      // Update the result
       this.result = {
         instruction1: instruction1Found ? "SI" : "NO",
         instruction2: instruction2Found ? "SI" : "NO",
@@ -81,13 +81,13 @@ export default {
       this.showResult = true;
     },
     verificarInstruccion(instruction: String, message: String, instructionLength: number) {
-    // Buscar la instrucción en el mensaje permitiendo repeticiones
+    // Search for the instruction in the message allowing repetitions
     let i = 0;
     for (let j = 0; j < message.length; j++) {
         if (instruction[i] === message[j]) {
             i++;
             if (i === instructionLength) {
-                // Verificar si la combinación no contiene dos letras iguales seguidas
+                // Verify if the combination doesn't contain two consecutive identical letters
                 if (!instruction.match(/(.)\1+/)) {
                     return true;
                 }
@@ -97,13 +97,13 @@ export default {
     return false;
     },
     cleanError() {
-      this.error = ""; // Restablecer el mensaje de error a un valor vacío
+      this.error = ""; // Reset the error message to an empty value
     },
   },
 };
 </script>
 <style scoped>
-/* Estilo para el contenedor principal */
+/* Style for the main container */
 div {
     margin: 20px;
     padding: 20px;
@@ -112,14 +112,14 @@ div {
     border-radius: 5px;
   }
 
-  /* Estilo para el título */
+  /* Style for the title */
   h1 {
     font-size: 24px;
     color: #333;
     margin-bottom: 10px;
   }
 
-  /* Estilo para el botón "Procesar" */
+  /* Style for the "Process" button */
   button {
     background-color: #007BFF;
     color: #fff;
@@ -129,12 +129,12 @@ div {
     cursor: pointer;
   }
 
-  /* Estilo para el botón "Seleccionar archivo" */
+  /* Style for the "Select file" input */
   input[type="file"] {
     margin-top: 10px;
   }
 
-  /* Estilo para el resultado */
+  /* Style for the result */
   h2 {
     font-size: 20px;
     margin-top: 20px;
@@ -145,7 +145,7 @@ div {
     margin: 5px 0;
   }
 
-  /* Estilo para el textarea */
+  /* Style for the textarea */
   textarea {
     width: 100%;
     height: 100px;
@@ -154,7 +154,7 @@ div {
     border-radius: 5px;
   }
 
-  /* Estilo para mensajes de alerta */
+  /* Style for alert messages */
   .alert {
     text-align: center;
     color: #ff0000;
