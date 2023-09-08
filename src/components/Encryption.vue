@@ -20,18 +20,18 @@
 export default {
   data() {
     return {
-      inputText: "",
+      inputText: null as string | null,
       resultado: null,
       error: "",
     };
   },
   methods: {
-    cargarArchivo(event) {
-      const archivo = event.target.files[0];
+    cargarArchivo(event: Event) {
+      const archivo = (event.target as HTMLInputElement).files?.[0];
       if (archivo) {
         const lector = new FileReader();
         lector.onload = (e) => {
-          this.inputText = e.target.result; // Asignar el contenido del archivo a inputText
+          this.inputText = e.target?.result as string;
           this.limpiarError();
         };
         lector.readAsText(archivo);
