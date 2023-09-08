@@ -13,6 +13,7 @@
             <p>Primera Instrucción: {{ resultado.instruccion1 }}</p>
             <p>Segunda Instrucción: {{ resultado.instruccion2 }}</p>
         </div>
+        <p class="alert" v-if="error">{{ error }}</p>
     </div>
 </template>
 <script lang="ts">
@@ -21,6 +22,7 @@ export default {
     return {
       inputText: "",
       resultado: null,
+      error: "",
     };
   },
   methods: {
@@ -37,20 +39,16 @@ export default {
     procesarEntrada() {
       // Dividir el texto de entrada en líneas
       const lineas = this.inputText.split("\n");
-      console.log("Líneas de entrada:", lineas);
       if (lineas.length !== 4) {
-        alert("La entrada debe tener exactamente cuatro líneas.");
+        this.error = "La entrada debe tener exactamente cuatro líneas."
         return;
       }
 
       // Leer los valores de M1, M2 y N desde la primera línea
       const [M1, M2, N] = lineas[0].split(" ").map(Number);
-    console.log("M1:", M1);
-    console.log("M2:", M2);
-    console.log("N:", N);
       // Validar que N esté dentro del rango especificado (entre 3 y 5000)
       if (N < 3 || N > 5000) {
-        alert("El valor de N debe estar entre 3 y 5000.");
+        this.error = "El valor de N debe estar entre 3 y 5000."
         return;
       }
 
@@ -58,9 +56,6 @@ export default {
       const instruccion1 = lineas[1];
       const instruccion2 = lineas[2];
       const mensaje = lineas[3];
-      console.log("Instrucción 1:", instruccion1);
-      console.log("Instrucción 2:", instruccion2);
-      console.log("Mensaje:", mensaje);
 
       // Verificar si las instrucciones están escondidas en el mensaje
       const instruccion1Encontrada = this.verificarInstruccion(instruccion1, mensaje, M1);
@@ -159,6 +154,7 @@ div {
 
   /* Estilo para mensajes de alerta */
   .alert {
+    text-align: center;
     color: #ff0000;
     margin-top: 10px;
   } 
