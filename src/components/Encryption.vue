@@ -2,7 +2,7 @@
     <div>
         <div>
           <h1>Verificación de Instrucciones</h1>
-          <textarea v-model="inputText" placeholder="Ingrese la entrada aquí"></textarea>
+          <textarea v-model="inputText" placeholder="Ingrese la entrada aquí"  @input="limpiarError"></textarea>
           <button @click="procesarEntrada">Procesar</button>
         </div>
         <div>
@@ -32,6 +32,7 @@ export default {
         const lector = new FileReader();
         lector.onload = (e) => {
           this.inputText = e.target.result; // Asignar el contenido del archivo a inputText
+          this.limpiarError();
         };
         lector.readAsText(archivo);
       }
@@ -66,6 +67,7 @@ export default {
         instruccion1: instruccion1Encontrada ? "SI" : "NO",
         instruccion2: instruccion2Encontrada ? "SI" : "NO",
       };
+      this.limpiarError();
     },
     verificarInstruccion(instruccion, mensaje, longitudInstruccion) {
     // Buscar la instrucción en el mensaje permitiendo repeticiones
@@ -96,7 +98,10 @@ export default {
         }
     }
     return combinaciones;
-    },  
+    },
+    limpiarError() {
+      this.error = ""; // Restablecer el mensaje de error a un valor vacío
+    },
   },
 };
 </script>
