@@ -1,9 +1,13 @@
 <template lang="">
     <div>
-        <h1>Verificación de Instrucciones</h1>
-        <textarea v-model="inputText" placeholder="Ingrese la entrada aquí"></textarea>
-        <button @click="procesarEntrada">Procesar</button>
-
+        <div>
+          <h1>Verificación de Instrucciones</h1>
+          <textarea v-model="inputText" placeholder="Ingrese la entrada aquí"></textarea>
+          <button @click="procesarEntrada">Procesar</button>
+        </div>
+        <div>
+          <input type="file" @change="cargarArchivo">
+        </div>
         <div v-if="resultado">
             <h2>Resultado:</h2>
             <p>Primera Instrucción: {{ resultado.instruccion1 }}</p>
@@ -20,6 +24,16 @@ export default {
     };
   },
   methods: {
+    cargarArchivo(event) {
+      const archivo = event.target.files[0];
+      if (archivo) {
+        const lector = new FileReader();
+        lector.onload = (e) => {
+          this.inputText = e.target.result; // Asignar el contenido del archivo a inputText
+        };
+        lector.readAsText(archivo);
+      }
+    },
     procesarEntrada() {
       // Dividir el texto de entrada en líneas
       const lineas = this.inputText.split("\n");
