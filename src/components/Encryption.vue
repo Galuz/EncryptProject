@@ -106,8 +106,60 @@ export default {
 };
 </script>
 <style scoped>
-textarea {
+/* Estilo para el contenedor principal */
+div {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+  }
+
+  /* Estilo para el título */
+  h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  /* Estilo para el botón "Procesar" */
+  button {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  /* Estilo para el botón "Seleccionar archivo" */
+  input[type="file"] {
+    margin-top: 10px;
+  }
+
+  /* Estilo para el resultado */
+  h2 {
+    font-size: 20px;
+    margin-top: 20px;
+  }
+
+  p {
+    font-size: 16px;
+    margin: 5px 0;
+  }
+
+  /* Estilo para el textarea */
+  textarea {
     width: 100%;
     height: 100px;
-}   
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  /* Estilo para mensajes de alerta */
+  .alert {
+    color: #ff0000;
+    margin-top: 10px;
+  } 
 </style>
