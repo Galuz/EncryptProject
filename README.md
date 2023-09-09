@@ -74,11 +74,12 @@ NO
 Second Example:
 
 Input:
+```sh
 14 11 30
 EsperenLaSeñal
 AtaqueAereo
 WWAttaquuueeAAerreoooERRkmmNNN
-
+```
 Output:
 NO
 SI
@@ -86,11 +87,12 @@ SI
 Third example:
 
 Input:
+```sh
 10 9 24
 Javascript
 Programar
 zXXVolaarrrBajjjoooXXLLL
-
+```
 Output:
 NO
 NO
@@ -98,11 +100,12 @@ NO
 Fourth example:
 
 Input:
+```sh
 5 7 29
 Tomar
 Cerveza
 zXXTTooomarrCCCervvezzzaXXLLL
-
+```
 Output:
 SI
 SI
