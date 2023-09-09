@@ -50,3 +50,58 @@ npm run test:unit
 ```sh
 npm run lint
 ```
+### Instructions to test the code 
+
+You have two options to test the functionality of the code. The first one is to enter the instructions in the text area, following the PDF instructions. On the first line, you should input the sizes of the strings, on the second line, the first instruction, on the third line, the second instruction, and on the fourth line, the hidden message. All of this should be done without spaces, using "CamelCase."
+
+The second option is to click the button to select a TXT file from your computer, following the same rules mentioned above.
+
+Here are some use cases:
+
+First Example:
+
+Input:
+11 15 38
+CeseAlFuego
+CorranACubierto
+XXcaaamakkCCessseAAllFueeegooDLLKmmNNN
+
+Output:
+SI
+NO
+
+Second Example:
+
+Input:
+14 11 30
+EsperenLaSeñal
+AtaqueAereo
+WWAttaquuueeAAerreoooERRkmmNNN
+
+Output:
+NO
+SI
+
+Third example:
+
+Input:
+10 9 24
+Javascript
+Programar
+zXXVolaarrrBajjjoooXXLLL
+
+Output:
+NO
+NO
+
+Fourth example:
+
+Input:
+5 7 29
+Tomar
+Cerveza
+zXXTTooomarrCCCervvezzzaXXLLL
+
+Output:
+SI
+SI
