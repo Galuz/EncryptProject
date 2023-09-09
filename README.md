@@ -61,11 +61,12 @@ Here are some use cases:
 First Example:
 
 Input:
+```sh
 11 15 38
 CeseAlFuego
 CorranACubierto
 XXcaaamakkCCessseAAllFueeegooDLLKmmNNN
-
+```
 Output:
 SI
 NO
