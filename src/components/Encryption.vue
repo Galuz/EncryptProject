@@ -57,6 +57,13 @@ export default {
 
       // Read values of M1, M2, and N from the first line
       const [M1, M2, N] = lines[0].split(" ").map(Number);
+      // Validate that M1 and M2 are within the specified range (between 2 and 50)
+
+      if (M1 < 2 || M1 > 50 || M2 < 2 || M2 > 50) {
+        this.error = "M1 y M2 deben estar entre 2 y 50 inclusive.";
+        return;
+      }
+
       // Validate that N is within the specified range (between 3 and 5000)
       if (N < 3 || N > 5000) {
         this.error = "El valor de N debe estar entre 3 y 5000."
@@ -68,6 +75,17 @@ export default {
       const instruction2 = lines[2];
       const message = lines[3];
 
+       // Validate that instruction1 and instruction2 are within the specified range (between 2 and 50)
+      if (instruction1.length < 2 || instruction1.length > 50 || instruction2.length < 2 || instruction2.length > 50) {
+        this.error = "Las instrucciones deben tener entre 2 y 50 caracteres.";
+        return;
+      }
+
+      //validate that message are within the specified range (between 3 and 5000)
+      if(message.length < 3 || message.length > 5000){
+        this.error = "El mensaje debe tener entre 3 y 5000 caracteres."
+        return;
+      }
       // Verify if the instructions are hidden in the message
       const instruction1Found = this.verificarInstruccion(instruction1, message, M1);
       const instruction2Found = this.verificarInstruccion(instruction2, message, M2);
