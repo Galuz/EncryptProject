@@ -63,7 +63,7 @@ export default {
       },
       calculateWinner() {
         this.winner=null;
-        // Verificar si el campo de entrada está vacío
+        // Check if the input field is empty.
         if (!this.inputData.trim()) {
           this.errorMessage = 'Ingresa los datos antes de calcular.';
           return;
@@ -71,36 +71,36 @@ export default {
         
         const lines = this.inputData.trim().split('\n');
         const numRounds = parseInt(lines[0]);
-        const roundsData = lines.slice(1); // Obtener las líneas de los datos de las rondas
+        const roundsData = lines.slice(1); // Retrieve the lines of data from the rounds.
         const rounds = [];
         let player1Total = 0;
         let player2Total = 0;
         let leaderMargin = 0;
 
-        // Limpiar mensajes de error al comenzar el cálculo
+        // Clear error messages when starting the calculation.
         this.errorMessage = '';
 
         if (numRounds !== roundsData.length) {
-          // Verificar si el número de rondas especificado no coincide con la cantidad real de rondas
+          // Check if the specified number of rounds does not match the actual quantity of rounds.
           this.errorMessage = `El número de rondas especificado (${numRounds}) no coincide con la cantidad de rondas proporcionadas (${roundsData.length}).`;
-          return; // Salir del cálculo si hay un error
+          return; // Exit the calculation if there is an error.
         }
 
         for (let i = 0; i < numRounds; i++) {
-          // Utilizar una expresión regular actualizada para validar el formato de la línea
+          // Use an updated regular expression to validate the format of the line.
           const line = roundsData[i].trim();
           const values = line.split(/\s+/).map(Number);
 
           if (values.length !== 2) {
-            // Verificar si la línea no contiene exactamente 2 valores
+            // Check if the line does not contain exactly 2 values.
             this.errorMessage = `Deben de ser exactamente 2 jugadores.`;
-            return; // Salir del cálculo si hay un error
+            return;
           }
 
           if (values.some(value => value < 0)) {
-            // Verificar si alguno de los valores es negativo
+            // Check if any of the values is negative.
             this.errorMessage = `Los números negativos no están permitidos en la línea ${i + 2}.`;
-            return; // Salir del cálculo si hay un error
+            return;
           }
 
           const [player1Str, player2Str] = values;
@@ -108,9 +108,9 @@ export default {
           const player2 = Number(player2Str);
 
           if (isNaN(player1) || isNaN(player2)) {
-            // Verificar si alguno de los valores no es un número válido
+            // Check if any of the values is not a valid number.
             this.errorMessage = `Los valores deben ser numericos`;
-            return; // Salir del cálculo si hay un error de conversión
+            return;
           }
 
           player1Total += player1;
@@ -144,16 +144,16 @@ export default {
       },
 
       downloadResults() {
-        // Obtén el contenido del archivo de texto
+        // Retrieve the content of the text file.
         const fileContent = this.generateResultsFileContent();
 
-        // Crea un Blob con el contenido y establece el tipo de archivo
+        // Create a Blob object with the text content.
         const blob = new Blob([fileContent], { type: 'text/plain' });
 
-        // Crea una URL para el Blob
+        // Create a URL for the Blob
         const url = window.URL.createObjectURL(blob);
 
-        // Crea un enlace de descarga y simula un clic para descargar el archivo
+        // Create a download link element.
         const a = document.createElement('a');
         a.style.display = 'none';
         a.href = url;
@@ -161,27 +161,24 @@ export default {
         document.body.appendChild(a);
         a.click();
 
-        // Libera la URL creada para el Blob
+        // Release the URL of the Blob.
         window.URL.revokeObjectURL(url);
       },
     },
 };
 </script>
 <style scoped>
-    /* Estilos para el contenedor principal */
   div {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
   }
 
-  /* Estilos para el título */
   h1 {
     font-size: 24px;
     margin-bottom: 20px;
   }
 
-  /* Estilos para el textarea */
   textarea {
     width: 100%;
     padding: 10px;
@@ -190,7 +187,6 @@ export default {
     margin-bottom: 10px;
   }
 
-  /* Estilos para el botón */
   button {
     background-color: #007bff;
     color: #fff;
@@ -211,30 +207,24 @@ export default {
     padding: 0;
     margin-bottom: 16px;
   }
-
   .buttons-wrapper button{
     margin: auto auto auto 0;
   }
-
   .buttons-wrapper input{
     margin: auto 0 auto auto;
   }
 
-  /* Estilos para la tabla */
   table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
   }
 
-  /* Estilos para las celdas de la tabla */
   th, td {
     padding: 10px;
     border: 1px solid #ccc;
     text-align: center;
   }
-
-  /* Estilos para el mensaje del ganador */
   .winner-message {
     background-color: #4caf50;
     color: #fff;
@@ -242,8 +232,6 @@ export default {
     border-radius: 4px;
     margin-bottom: 16px;
   }
-
-  /* Estilos para el mensaje de error */
   .error-message {
      background-color: #f44336;
      color: #fff;
