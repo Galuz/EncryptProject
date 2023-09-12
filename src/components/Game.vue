@@ -1,13 +1,11 @@
 <template>
     <div>
-      <!-- Input para cargar archivos -->
-      <div>
-          <input type="file" @change="loadFile">
-      </div>
       <h1>Resultado del Juego</h1>
       <textarea v-model="inputData" placeholder="Ingresa los datos aquí"></textarea>
-      <button @click="calculateWinner">Calcular Ganador</button>
-      
+      <div class="buttons-wrapper">
+        <button @click="calculateWinner">Calcular Ganador</button>
+        <input type="file" @change="loadFile">
+      </div>
       <table>
         <thead>
           <tr>
@@ -34,7 +32,7 @@
           <p>{{ errorMessage }}</p>
       </div>
        <!-- winner -->
-      <div v-if="winner">
+      <div v-if="winner" class="winner-message">
         <p>El ganador es el Jugador {{ winner.player }} con una ventaja de {{ winner.margin }}.</p>
       </div>
     </div>
@@ -173,6 +171,20 @@ export default {
     margin-bottom: 16px;
   }
 
+  .buttons-wrapper{
+    display:flex;
+    padding: 0;
+    margin-bottom: 16px;
+  }
+
+  .buttons-wrapper button{
+    margin: auto auto auto 0;
+  }
+
+  .buttons-wrapper input{
+    margin: auto 0 auto auto;
+  }
+
   /* Estilos para la tabla */
   table {
     width: 100%;
@@ -187,17 +199,13 @@ export default {
     text-align: center;
   }
 
-  /* Estilos para la fila del ganador */
-  .winner-row {
-    background-color: #4caf50;
-    color: #fff;
-  }
-
   /* Estilos para el mensaje del ganador */
   .winner-message {
-    font-weight: bold;
-    font-size: 18px;
-    margin-top: 20px;
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 16px;
   }
 
   /* Estilos para el mensaje de error */
