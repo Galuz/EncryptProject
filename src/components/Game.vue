@@ -26,7 +26,7 @@
           </tr>
         </tbody>
       </table>
-      <button @click="downloadResults">Descargar Resultados</button>
+      <button @click="downloadResults" :disabled="!winner">Descargar Resultados</button>
       <!-- Agregar un mensaje de error -->
       <div v-if="errorMessage" class="error-message">
           <p>{{ errorMessage }}</p>
@@ -134,7 +134,7 @@ export default {
 
         this.rounds = rounds;
       },
-      
+
       generateResultsFileContent(): string {
         if (!this.winner) {
           return 'No hay ganador.';
@@ -201,6 +201,11 @@ export default {
     margin-bottom: 16px;
   }
 
+  button:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+  }
   .buttons-wrapper{
     display:flex;
     padding: 0;
