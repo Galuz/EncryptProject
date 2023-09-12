@@ -48,6 +48,7 @@ export default {
     },
     methods: {
       calculateWinner() {
+        this.winner=null;
         // Verificar si el campo de entrada está vacío
         if (!this.inputData.trim()) {
           this.errorMessage = 'Ingresa los datos antes de calcular.';
@@ -55,7 +56,6 @@ export default {
         }
         
         const lines = this.inputData.trim().split('\n');
-        console.log(lines);
         const numRounds = parseInt(lines[0]);
         const roundsData = lines.slice(1); // Obtener las líneas de los datos de las rondas
         const rounds = [];
