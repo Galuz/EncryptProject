@@ -64,12 +64,6 @@ export default {
       for (let i = 1; i <= numRounds; i++) {
         // Utilizar una expresión regular actualizada para validar el formato de la línea
         const line = lines[i].trim();
-        if (!/^\d+\s+\d+$/.test(line.replace(/\s+/g, ' '))) {
-          // Mostrar un mensaje de error si el formato es incorrecto
-          this.errorMessage = `Formato incorrecto en la línea ${i}: "${line}". Debe ser dos números separados por un espacio.`;
-          return; // Salir del cálculo si hay un error
-        }
-
         const [player1, player2] = line.split(/\s+/).map(Number);
         player1Total += player1;
         player2Total += player2;
