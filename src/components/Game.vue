@@ -34,14 +34,12 @@
   </template>
   
 <script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({
+export default {
     data() {
     return {
         inputData: '',
-        rounds: [],
-        winner: null,
+        rounds: [] as { player1: number; player2: number; leader: string; margin: number }[],
+        winner: null as { player: number; margin: number } | null,
     };
     },
     methods: {
@@ -57,7 +55,7 @@ export default defineComponent({
         const [player1, player2] = lines[i].split(' ').map(Number);
 
         console.log(`Ronda ${i}: Jugador 1 = ${player1}, Jugador 2 = ${player2}`);
-        
+
         player1Total += player1;
         player2Total += player2;
         const leader = player1Total - player2Total;
@@ -80,7 +78,7 @@ export default defineComponent({
         this.rounds = rounds;
     },
     },
-});
+};
 </script>
 <style scoped>
     /* Estilos para el contenedor principal */
