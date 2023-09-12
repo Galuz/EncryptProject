@@ -89,7 +89,16 @@ export default {
             return; // Salir del cálculo si hay un error
           }
 
-          const [player1, player2] = values;
+          const [player1Str, player2Str] = values;
+          const player1 = Number(player1Str);
+          const player2 = Number(player2Str);
+
+          if (isNaN(player1) || isNaN(player2)) {
+            // Verificar si alguno de los valores no es un número válido
+            this.errorMessage = `Los valores deben ser numericos`;
+            return; // Salir del cálculo si hay un error de conversión
+          }
+
           player1Total += player1;
           player2Total += player2;
           const leader = player1Total - player2Total;
