@@ -50,41 +50,48 @@ export default {
     },
     methods: {
       calculateWinner() {
-      const lines = this.inputData.trim().split('\n');
-      console.log(lines);
-      const numRounds = parseInt(lines[0]);
-      const rounds = [];
-      let player1Total = 0;
-      let player2Total = 0;
-      let leaderMargin = 0;
+        const lines = this.inputData.trim().split('\n');
+        console.log(lines);
+        const numRounds = parseInt(lines[0]);
+        const roundsData = lines.slice(1); // Obtener las líneas de los datos de las rondas
+        const rounds = [];
+        let player1Total = 0;
+        let player2Total = 0;
+        let leaderMargin = 0;
 
-      // Limpiar mensajes de error al comenzar el cálculo
-      this.errorMessage = '';
+        // Limpiar mensajes de error al comenzar el cálculo
+        this.errorMessage = '';
 
-      for (let i = 1; i <= numRounds; i++) {
-        // Utilizar una expresión regular actualizada para validar el formato de la línea
-        const line = lines[i].trim();
-        const [player1, player2] = line.split(/\s+/).map(Number);
-        player1Total += player1;
-        player2Total += player2;
-        const leader = player1Total - player2Total;
-        const currentLeader = leader > 0 ? 1 : 2;
-        const margin = Math.abs(leader);
-
-        rounds.push({
-          player1: player1Total,
-          player2: player2Total,
-          leader: `Jugador ${currentLeader}`,
-          margin,
-        });
-
-        if (margin > leaderMargin) {
-          leaderMargin = margin;
-          this.winner = { player: currentLeader, margin };
+        if (numRounds !== roundsData.length) {
+          // Verificar si el número de rondas especificado no coincide con la cantidad real de rondas
+          this.errorMessage = `El número de rondas especificado (${numRounds}) no coincide con la cantidad de rondas proporcionadas (${roundsData.length}).`;
+          return; // Salir del cálculo si hay un error
         }
-      }
 
-      this.rounds = rounds;
+        for (let i = 0; i < numRounds; i++) {
+          // Utilizar una expresión regular actualizada para validar el formato de la línea
+          const line = roundsData[i].trim();
+          const [player1, player2] = line.split(/\s+/).map(Number);
+          player1Total += player1;
+          player2Total += player2;
+          const leader = player1Total - player2Total;
+          const currentLeader = leader > 0 ? 1 : 2;
+          const margin = Math.abs(leader);
+
+          rounds.push({
+            player1: player1Total,
+            player2: player2Total,
+            leader: `Jugador ${currentLeader}`,
+            margin,
+          });
+
+          if (margin > leaderMargin) {
+            leaderMargin = margin;
+            this.winner = { player: currentLeader, margin };
+          }
+        }
+
+        this.rounds = rounds;
       },
     },
 };
