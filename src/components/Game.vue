@@ -72,6 +72,13 @@ export default {
           // Utilizar una expresión regular actualizada para validar el formato de la línea
           const line = roundsData[i].trim();
           const [player1, player2] = line.split(/\s+/).map(Number);
+
+          if (player1 < 0 || player2 < 0) {
+            // Verificar si alguno de los números es negativo
+            this.errorMessage = `Los números negativos no están permitidos en la línea ${i + 2}.`;
+            return; // Salir del cálculo si hay un error
+          }
+          
           player1Total += player1;
           player2Total += player2;
           const leader = player1Total - player2Total;
