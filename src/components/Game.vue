@@ -1,5 +1,9 @@
 <template>
     <div>
+      <!-- Input para cargar archivos -->
+      <div>
+          <input type="file" @change="loadFile">
+      </div>
       <h1>Resultado del Juego</h1>
       <textarea v-model="inputData" placeholder="Ingresa los datos aquí"></textarea>
       <button @click="calculateWinner">Calcular Ganador</button>
@@ -26,7 +30,7 @@
       </table>
   
       <!-- Agregar un mensaje de error -->
-      <div v-if="errorMessage">
+      <div v-if="errorMessage" class="error-message">
           <p>{{ errorMessage }}</p>
       </div>
        <!-- winner -->
@@ -47,6 +51,18 @@ export default {
     };
     },
     methods: {
+      loadFile(event: Event) {
+        const file  = (event.target as HTMLInputElement).files?.[0];
+        if (file ) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            this.inputData = e.target?.result as string;
+          };
+          reader.readAsText(file);
+        } else {
+          this.inputData = "";
+        }
+      },
       calculateWinner() {
         this.winner=null;
         // Verificar si el campo de entrada está vacío
@@ -183,4 +199,13 @@ export default {
     font-size: 18px;
     margin-top: 20px;
   }
+
+  /* Estilos para el mensaje de error */
+  .error-message {
+     background-color: #f44336;
+     color: #fff;
+     padding: 10px;
+     border-radius: 4px;
+     margin-bottom: 16px;
+   }
 </style>
