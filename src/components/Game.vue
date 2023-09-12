@@ -140,7 +140,7 @@ export default {
           return 'No hay ganador.';
         }
 
-        return `El ganador es el Jugador ${this.winner.player} con una ventaja de ${this.winner.margin}.`;
+        return `${this.winner.player} ${this.winner.margin}`;
       },
 
       downloadResults() {
