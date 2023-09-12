@@ -71,14 +71,21 @@ export default {
         for (let i = 0; i < numRounds; i++) {
           // Utilizar una expresión regular actualizada para validar el formato de la línea
           const line = roundsData[i].trim();
-          const [player1, player2] = line.split(/\s+/).map(Number);
+          const values = line.split(/\s+/).map(Number);
 
-          if (player1 < 0 || player2 < 0) {
-            // Verificar si alguno de los números es negativo
+          if (values.length !== 2) {
+            // Verificar si la línea no contiene exactamente 2 valores
+            this.errorMessage = `Deben de ser exactamente 2 jugadores.`;
+            return; // Salir del cálculo si hay un error
+          }
+
+          if (values.some(value => value < 0)) {
+            // Verificar si alguno de los valores es negativo
             this.errorMessage = `Los números negativos no están permitidos en la línea ${i + 2}.`;
             return; // Salir del cálculo si hay un error
           }
-          
+
+          const [player1, player2] = values;
           player1Total += player1;
           player2Total += player2;
           const leader = player1Total - player2Total;
