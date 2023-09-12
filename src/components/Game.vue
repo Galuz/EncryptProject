@@ -26,7 +26,12 @@
           </tr>
         </tbody>
       </table>
-      
+  
+      <!-- Agregar un mensaje de error -->
+      <div v-if="errorMessage">
+          <p>{{ errorMessage }}</p>
+      </div>
+       <!-- winner -->
       <div v-if="winner">
         <p>El ganador es el Jugador {{ winner.player }} con una ventaja de {{ winner.margin }}.</p>
       </div>
@@ -40,22 +45,32 @@ export default {
         inputData: '',
         rounds: [] as { player1: number; player2: number; leader: string; margin: number }[],
         winner: null as { player: number; margin: number } | null,
+        errorMessage: '',
     };
     },
     methods: {
-    calculateWinner() {
-        const lines = this.inputData.trim().split('\n');
-        const numRounds = parseInt(lines[0]);
-        const rounds = [];
-        let player1Total = 0;
-        let player2Total = 0;
-        let leaderMargin = 0;
+      calculateWinner() {
+      const lines = this.inputData.trim().split('\n');
+      console.log(lines);
+      const numRounds = parseInt(lines[0]);
+      const rounds = [];
+      let player1Total = 0;
+      let player2Total = 0;
+      let leaderMargin = 0;
 
-        for (let i = 1; i <= numRounds; i++) {
-        const [player1, player2] = lines[i].split(' ').map(Number);
+      // Limpiar mensajes de error al comenzar el cálculo
+      this.errorMessage = '';
 
-        console.log(`Ronda ${i}: Jugador 1 = ${player1}, Jugador 2 = ${player2}`);
+      for (let i = 1; i <= numRounds; i++) {
+        // Utilizar una expresión regular actualizada para validar el formato de la línea
+        const line = lines[i].trim();
+        if (!/^\d+\s+\d+$/.test(line.replace(/\s+/g, ' '))) {
+          // Mostrar un mensaje de error si el formato es incorrecto
+          this.errorMessage = `Formato incorrecto en la línea ${i}: "${line}". Debe ser dos números separados por un espacio.`;
+          return; // Salir del cálculo si hay un error
+        }
 
+        const [player1, player2] = line.split(/\s+/).map(Number);
         player1Total += player1;
         player2Total += player2;
         const leader = player1Total - player2Total;
@@ -63,20 +78,20 @@ export default {
         const margin = Math.abs(leader);
 
         rounds.push({
-            player1: player1Total,
-            player2: player2Total,
-            leader: `Jugador ${currentLeader}`,
-            margin,
+          player1: player1Total,
+          player2: player2Total,
+          leader: `Jugador ${currentLeader}`,
+          margin,
         });
 
         if (margin > leaderMargin) {
-            leaderMargin = margin;
-            this.winner = { player: currentLeader, margin };
+          leaderMargin = margin;
+          this.winner = { player: currentLeader, margin };
         }
-        }
+      }
 
-        this.rounds = rounds;
-    },
+      this.rounds = rounds;
+      },
     },
 };
 </script>
@@ -111,6 +126,7 @@ export default {
     padding: 10px 20px;
     border-radius: 4px;
     cursor: pointer;
+    margin-bottom: 16px;
   }
 
   /* Estilos para la tabla */
