@@ -12,6 +12,7 @@
             <h2>Resultado:</h2>
             <p>Primera Instrucción: {{ result.instruction1  }}</p>
             <p>Segunda Instrucción: {{ result.instruction2  }}</p>
+            <button @click="downloadResults">Descargar Resultados</button>
         </div>
         <p class="alert" v-if="error">{{ error }}</p>
     </div>
@@ -90,6 +91,18 @@ export default {
       const instruction1Found = this.verificarInstruccion(instruction1, message, M1);
       const instruction2Found = this.verificarInstruccion(instruction2, message, M2);
 
+      // Check if both instructions are found
+      if (instruction1Found && instruction2Found) {
+        this.error = "Se encontraron ambas instrucciones en el mensaje. Debe haber solo una instrucción oculta.";
+        return;
+      }
+
+      // Check if at least exist 1 instruction
+      if (!instruction1Found && !instruction2Found) {
+        this.error = "No se encontro ninguna instruccion oculta.";
+        return;
+      }
+
       // Update the result
       this.result = {
         instruction1: instruction1Found ? "SI" : "NO",
@@ -116,6 +129,31 @@ export default {
     },
     cleanError() {
       this.error = ""; // Reset the error message to an empty value
+    },
+    downloadResults() {
+      if (!this.result) {
+        return;
+      }
+      // Create the content of the results file.
+      const content = `Primera Instrucción: ${this.result.instruction1}\nSegunda Instrucción: ${this.result.instruction2}`;
+
+      // Create a Blob object with the text content.
+      const blob = new Blob([content], { type: "text/plain" });
+
+      // Create a URL for the Blob
+      const url = window.URL.createObjectURL(blob);
+
+      // Create a download link element.
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "resultados.txt"; // Output file name.
+      document.body.appendChild(a);
+
+      // Simulate a click on the link to initiate the download.
+      a.click();
+
+      // Release the URL of the Blob.
+      window.URL.revokeObjectURL(url);
     },
   },
 };
