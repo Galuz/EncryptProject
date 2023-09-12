@@ -46,94 +46,69 @@ export default {
     },
     processInput() {
       this.showResult = false;
-      if (!this.inputText) {
-        this.error = "El texto de entrada está vacío.";
-        return;
-      }
-
-      // Split input text into lines
+      // ... (sin cambios)
       const lines = (this.inputText as string).split("\n");
-      if (lines.length !== 4) {
-        this.error = "La entrada debe tener exactamente cuatro líneas."
-        return;
-      }
-
       // Read values of M1, M2, and N from the first line
       const [M1, M2, N] = lines[0].split(" ").map(Number);
-      // Validate that M1 and M2 are within the specified range (between 2 and 50)
-
-      if (M1 < 2 || M1 > 50 || M2 < 2 || M2 > 50) {
-        this.error = "M1 y M2 deben estar entre 2 y 50 inclusive.";
-        return;
-      }
-
-      // Validate that N is within the specified range (between 3 and 5000)
-      if (N < 3 || N > 5000) {
-        this.error = "El valor de N debe estar entre 3 y 5000."
-        return;
-      }
-
       // Read instructions and the message from the following lines
       const instruction1 = lines[1];
       const instruction2 = lines[2];
       const message = lines[3];
 
-       // Validate that instruction1 and instruction2 are within the specified range (between 2 and 50)
-      if (instruction1.length < 2 || instruction1.length > 50 || instruction2.length < 2 || instruction2.length > 50) {
-        this.error = "Las instrucciones deben tener entre 2 y 50 caracteres.";
-        return;
-      }
+      if (this.isValidFile(message, instruction1, instruction2, N, M1, M2)) {
+        // Verify if the instructions are hidden in the message
+        const instruction1Found = this.verificarInstruccion(instruction1, message, M1);
+        const instruction2Found = this.verificarInstruccion(instruction2, message, M2);
 
-      //validate that message are within the specified range (between 3 and 5000)
-      if(message.length < 3 || message.length > 5000){
-        this.error = "El mensaje debe tener entre 3 y 5000 caracteres."
-        return;
+        // Check if both instructions are found
+        if (instruction1Found && instruction2Found) {
+          this.error = "Se encontraron ambas instrucciones en el mensaje. Debe haber solo una instrucción oculta.";
+        } else if (!instruction1Found && !instruction2Found) {
+          this.error = "No se encontró ninguna instrucción oculta.";
+        } else {
+          this.result = {
+            instruction1: instruction1Found ? "SI" : "NO",
+            instruction2: instruction2Found ? "SI" : "NO",
+          };
+          this.showResult = true;
+        }
       }
-      // Verify if the instructions are hidden in the message
-      const instruction1Found = this.verificarInstruccion(instruction1, message, M1);
-      const instruction2Found = this.verificarInstruccion(instruction2, message, M2);
-
-      // Validate that the message contains only [a-zA-Z0-9] characters
-      if (!/^[a-zA-Z0-9]+$/.test(message)) {
-        this.error = "El mensaje solo puede contener caracteres alfanuméricos (a-zA-Z0-9)."
-        return;
-      }
-
-      // Check if both instructions are found
-      if (instruction1Found && instruction2Found) {
-        this.error = "Se encontraron ambas instrucciones en el mensaje. Debe haber solo una instrucción oculta.";
-        return;
-      }
-
-      // Check if at least exist 1 instruction
-      if (!instruction1Found && !instruction2Found) {
-        this.error = "No se encontro ninguna instruccion oculta.";
-        return;
-      }
-
-      // Update the result
-      this.result = {
-        instruction1: instruction1Found ? "SI" : "NO",
-        instruction2: instruction2Found ? "SI" : "NO",
-      };
-      this.cleanError();
-      this.showResult = true;
     },
     verificarInstruccion(instruction: String, message: String, instructionLength: number) {
-    // Search for the instruction in the message allowing repetitions
-    let i = 0;
-    for (let j = 0; j < message.length; j++) {
+      // Search for the instruction in the message
+      let i = 0;
+      for (let j = 0; j < message.length; j++) {
         if (instruction[i] === message[j]) {
-            i++;
-            if (i === instructionLength) {
-                // Verify if the combination doesn't contain two consecutive identical letters
-                if (!instruction.match(/(.)\1+/)) {
-                    return true;
-                }
-            }
+          i++;
+          if (i === instructionLength) {
+            return true;
+          }
         }
-    }
-    return false;
+      }
+      return false;
+    },
+    isValidFile(message:string, instruction1:string, instruction2:string, longMessage:number, longInst1:number, longInst2:number) {
+      if (instruction1.length !== longInst1) {
+        this.error = 'La longitud de la instrucción 1 no coincide con la línea de encabezado.';
+        return false;
+      }
+      if (instruction2.length !== longInst2) {
+        this.error = 'La longitud de la instrucción 2 no coincide con la línea de encabezado.';
+        return false;
+      }
+      if (message.length !== longMessage) {
+        this.error = 'La longitud del mensaje no coincide con la línea de encabezado.';
+        return false;
+      }
+      if (/(.)\1{2,}/.test(message)) {
+        this.error = 'El mensaje contiene caracteres duplicados o triplicados.';
+        return false;
+      }
+      if (!/^[a-zA-Z0-9]+$/.test(message)) {
+        this.error = 'El mensaje solo puede contener caracteres alfanuméricos (a-zA-Z0-9).';
+        return false;
+      }
+      return true;
     },
     cleanError() {
       this.error = ""; // Reset the error message to an empty value
