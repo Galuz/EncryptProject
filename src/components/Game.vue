@@ -1,9 +1,7 @@
 <template>
     <div>
       <h1>Resultado del Juego</h1>
-      
       <textarea v-model="inputData" placeholder="Ingresa los datos aquí"></textarea>
-      
       <button @click="calculateWinner">Calcular Ganador</button>
       
       <table>
@@ -50,6 +48,12 @@ export default {
     },
     methods: {
       calculateWinner() {
+        // Verificar si el campo de entrada está vacío
+        if (!this.inputData.trim()) {
+          this.errorMessage = 'Ingresa los datos antes de calcular.';
+          return;
+        }
+        
         const lines = this.inputData.trim().split('\n');
         console.log(lines);
         const numRounds = parseInt(lines[0]);
