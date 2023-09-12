@@ -8,13 +8,15 @@
         <div>
           <input type="file" @change="loadFile">
         </div>
-        <div v-if="showResult">
+        <div v-if="showResult" class="results">
             <h2>Resultado:</h2>
             <p>Primera Instrucción: {{ result.instruction1  }}</p>
             <p>Segunda Instrucción: {{ result.instruction2  }}</p>
-            <button @click="downloadResults">Descargar Resultados</button>
         </div>
-        <p class="alert" v-if="error">{{ error }}</p>
+        <button @click="downloadResults" :disabled="!showResult">Descargar Resultados</button>
+        <div v-if="error" class="alert">
+          <p>{{ error }}</p>
+        </div>
     </div>
 </template>
 <script lang="ts">
@@ -167,10 +169,9 @@ export default {
 <style scoped>
 /* Style for the main container */
 div {
-    margin: 20px;
     padding: 20px;
+    margin-bottom: 16px;
     border: 1px solid #ccc;
-    background-color: #f8f8f8;
     border-radius: 5px;
   }
 
@@ -191,6 +192,12 @@ div {
     cursor: pointer;
   }
 
+  button:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+  }
+  
   /* Style for the "Select file" input */
   input[type="file"] {
     margin-top: 10px;
@@ -199,7 +206,6 @@ div {
   /* Style for the result */
   h2 {
     font-size: 20px;
-    margin-top: 20px;
   }
 
   p {
@@ -216,10 +222,20 @@ div {
     border-radius: 5px;
   }
 
+  .results{
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+  }
+
   /* Style for alert messages */
   .alert {
-    text-align: center;
-    color: #ff0000;
-    margin-top: 10px;
+    background-color: #f44336;
+    color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 16px;
   } 
 </style>
