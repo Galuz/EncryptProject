@@ -26,7 +26,7 @@
           </tr>
         </tbody>
       </table>
-  
+      <button @click="downloadResults">Descargar Resultados</button>
       <!-- Agregar un mensaje de error -->
       <div v-if="errorMessage" class="error-message">
           <p>{{ errorMessage }}</p>
@@ -133,6 +133,36 @@ export default {
         }
 
         this.rounds = rounds;
+      },
+      
+      generateResultsFileContent(): string {
+        if (!this.winner) {
+          return 'No hay ganador.';
+        }
+
+        return `El ganador es el Jugador ${this.winner.player} con una ventaja de ${this.winner.margin}.`;
+      },
+
+      downloadResults() {
+        // Obtén el contenido del archivo de texto
+        const fileContent = this.generateResultsFileContent();
+
+        // Crea un Blob con el contenido y establece el tipo de archivo
+        const blob = new Blob([fileContent], { type: 'text/plain' });
+
+        // Crea una URL para el Blob
+        const url = window.URL.createObjectURL(blob);
+
+        // Crea un enlace de descarga y simula un clic para descargar el archivo
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = 'resultados.txt';
+        document.body.appendChild(a);
+        a.click();
+
+        // Libera la URL creada para el Blob
+        window.URL.revokeObjectURL(url);
       },
     },
 };
