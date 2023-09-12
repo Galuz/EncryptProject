@@ -91,6 +91,12 @@ export default {
       const instruction1Found = this.verificarInstruccion(instruction1, message, M1);
       const instruction2Found = this.verificarInstruccion(instruction2, message, M2);
 
+      // Validate that the message contains only [a-zA-Z0-9] characters
+      if (!/^[a-zA-Z0-9]+$/.test(message)) {
+        this.error = "El mensaje solo puede contener caracteres alfanuméricos (a-zA-Z0-9)."
+        return;
+      }
+
       // Check if both instructions are found
       if (instruction1Found && instruction2Found) {
         this.error = "Se encontraron ambas instrucciones en el mensaje. Debe haber solo una instrucción oculta.";
