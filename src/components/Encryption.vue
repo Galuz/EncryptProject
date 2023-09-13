@@ -46,8 +46,18 @@ export default {
     },
     processInput() {
       this.showResult = false;
-      // ... (sin cambios)
       const lines = (this.inputText as string).split("\n");
+      // Check if there are exactly 4 lines in the input text.
+      if (lines.length !== 4) {
+        this.error = 'El texto de entrada debe contener exactamente 4 líneas.';
+        return;
+      }
+       // To verify that the first line contains exactly 3 numbers.
+      const firstLineParts = lines[0].split(" ");
+      if (firstLineParts.length !== 3 || !firstLineParts.every(part => /^\d+$/.test(part))) {
+        this.error = 'La primera línea debe contener exactamente 3 números separados por espacios.';
+        return;
+      }
       // Read values of M1, M2, and N from the first line
       const [M1, M2, N] = lines[0].split(" ").map(Number);
       // Read instructions and the message from the following lines
