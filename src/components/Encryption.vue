@@ -110,12 +110,12 @@ export default {
         this.error = 'La longitud del mensaje no coincide con la línea de encabezado.';
         return false;
       }
-      if (/(.)\1{2,}/.test(message)) {
+      if (/(.)\1{1,}/.test(message)) {
         this.error = 'El mensaje contiene caracteres duplicados o triplicados.';
         return false;
       }
       if(!isValidAlphanumeric(instruction1) || !isValidAlphanumeric(instruction2) || !isValidAlphanumeric(message)){
-        this.error = 'El mensaje solo puede contener caracteres alfanuméricos (a-zA-Z0-9).';
+        this.error = 'El mensaje o instruccion solo puede contener caracteres alfanuméricos (a-zA-Z0-9).';
         return false;
       }
       if (instruction1.length < 2 || instruction1.length > 50 || instruction2.length < 2 || instruction2.length > 50) {
@@ -123,7 +123,7 @@ export default {
         return false;
       }
       if(message.length < 3 || message.length > 5000){
-        this.error = 'La longitud de la instruccion no es la adecuada, deberia ser mayor a 3 o menor de 5000';
+        this.error = 'La longitud del mensaje no es la adecuada, deberia ser mayor a 3 o menor de 5000';
         return false;
       }
       function isValidAlphanumeric(instruction:string) {
