@@ -139,7 +139,7 @@ export default {
         return;
       }
       // Create the content of the results file.
-      const content = `Primera Instrucción: ${this.result.instruction1}\nSegunda Instrucción: ${this.result.instruction2}`;
+      const content = `${this.result.instruction1}\n${this.result.instruction2}`;
 
       // Create a Blob object with the text content.
       const blob = new Blob([content], { type: "text/plain" });
