@@ -104,9 +104,20 @@ export default {
         this.error = 'El mensaje contiene caracteres duplicados o triplicados.';
         return false;
       }
-      if (!/^[a-zA-Z0-9]+$/.test(message)) {
+      if(!isValidAlphanumeric(instruction1) || !isValidAlphanumeric(instruction2) || !isValidAlphanumeric(message)){
         this.error = 'El mensaje solo puede contener caracteres alfanuméricos (a-zA-Z0-9).';
         return false;
+      }
+      if (instruction1.length < 2 || instruction1.length > 50 || instruction2.length < 2 || instruction2.length > 50) {
+        this.error = 'La longitud de la instrucción no es la adecuada, debe ser mayor a 2 o menor de 50';
+        return false;
+      }
+      if(message.length < 3 || message.length > 5000){
+        this.error = 'La longitud de la instruccion no es la adecuada, deberia ser mayor a 3 o menor de 5000';
+        return false;
+      }
+      function isValidAlphanumeric(instruction:string) {
+        return /^[a-zA-Z0-9]+$/.test(instruction);
       }
       return true;
     },
@@ -211,6 +222,7 @@ div {
     color: #fff;
     padding: 10px;
     border-radius: 4px;
+    margin-top: 16px;
     margin-bottom: 16px;
   } 
 </style>
